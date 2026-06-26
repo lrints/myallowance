@@ -17,13 +17,20 @@
 
         <div id="flightContainer" class="space-y-3">
             <h2 class="font-bold">Select Flights</h2>
-            <div class="flight-row flex gap-2">
-                <select class="flight-select w-full border p-2 rounded" onchange="calculate()">
+            
+            <div class="flight-row flex gap-2 items-center">
+                <select class="flight-select w-full border p-2 rounded" onchange="updatePrice(this)">
                     <option value="0">Select a flight...</option>
-                    <option value="7850.50">315 - DEL (7,850.50)</option>
-                    <option value="4860.00">401 - SIN (4,860.00)</option>
-                    <option value="13830.00">461 - MEL (13,830.00)</option>
+                    <optgroup label="CLMV">
+                        <option value="3950">301 - RGN</option>
+                        <option value="3657.5">303 - RGN</option>
+                    </optgroup>
+                    <optgroup label="Domestic">
+                        <option value="3430">002 - UTH</option>
+                        <option value="3592.5">102 - CNX</option>
+                    </optgroup>
                 </select>
+                <input type="text" class="flight-price w-24 border p-2 rounded bg-gray-50 text-right font-bold" value="0" readonly>
             </div>
         </div>
 
@@ -38,32 +45,40 @@
     </div>
 
     <script>
-        const flightContainer = document.getElementById('flightContainer');
-        const addFlightBtn = document.getElementById('addFlightBtn');
+        function updatePrice(selectElement) {
+            const priceInput = selectElement.parentElement.querySelector('.flight-price');
+            priceInput.value = parseFloat(selectElement.value).toLocaleString();
+            calculate();
+        }
 
-        // ฟังก์ชันคำนวณ (เรียกใช้ได้ทุกที่เพราะวางไว้ใน HTML แล้ว)
         function calculate() {
             let total = parseFloat(document.getElementById('baseSalary').value) || 0;
-            document.querySelectorAll('.flight-select').forEach(select => {
-                total += parseFloat(select.value) || 0;
+            document.querySelectorAll('.flight-price').forEach(input => {
+                total += parseFloat(input.value.replace(/,/g, '')) || 0;
             });
             document.getElementById('totalAmount').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         }
 
-        // ฟังก์ชันเพิ่มแถว
-        addFlightBtn.addEventListener('click', () => {
+        document.getElementById('addFlightBtn').addEventListener('click', () => {
+            const container = document.getElementById('flightContainer');
             const newRow = document.createElement('div');
-            newRow.className = 'flight-row flex gap-2';
+            newRow.className = 'flight-row flex gap-2 items-center';
             newRow.innerHTML = `
-                <select class="flight-select w-full border p-2 rounded" onchange="calculate()">
+                <select class="flight-select w-full border p-2 rounded" onchange="updatePrice(this)">
                     <option value="0">Select a flight...</option>
-                    <option value="7850.50">315 - DEL (7,850.50)</option>
-                    <option value="4860.00">401 - SIN (4,860.00)</option>
-                    <option value="13830.00">461 - MEL (13,830.00)</option>
+                    <optgroup label="CLMV">
+                        <option value="3950">301 - RGN</option>
+                        <option value="3657.5">303 - RGN</option>
+                    </optgroup>
+                    <optgroup label="Domestic">
+                        <option value="3430">002 - UTH</option>
+                        <option value="3592.5">102 - CNX</option>
+                    </optgroup>
                 </select>
-                <button onclick="this.parentElement.remove(); calculate();" class="bg-red-100 text-red-600 px-3 rounded">×</button>
+                <input type="text" class="flight-price w-24 border p-2 rounded bg-gray-50 text-right font-bold" value="0" readonly>
+                <button onclick="this.parentElement.remove(); calculate();" class="bg-red-100 text-red-600 px-2 rounded">×</button>
             `;
-            flightContainer.appendChild(newRow);
+            container.appendChild(newRow);
         });
     </script>
 </body>
