@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-100 p-4">
     <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6">
-        <h1 class="text-xl font-bold mb-4">Snax Cabin Crew Allowance Calculator</h1>
+        <h1 class="text-xl font-bold mb-4">Cabin Crew Allowance Calculator</h1>
         
         <!-- Settings -->
         <div class="mb-6">
@@ -24,151 +24,181 @@
         </div>
 
         <!-- Flights -->
-        <div>
-            <h2 class="font-bold mb-2">Select Flights</h2>
-            <select id="flightSelect" class="w-full border p-2 rounded mb-2">
+<div id="flightContainer" class="space-y-3">
+            <h2 class="font-bold">Select Flights</h2>
+            <div class="flight-row flex gap-2">
+                <select class="flight-select w-full border p-2 rounded">
                 <option>Select a flight...</option>
-              <option value="7557.50">315 - DEL</option>
-<option value="7850.00">317 - BOM</option>
-<option value="5250.00">321 - DAC</option>
-<option value="7557.50">323 - DEL</option>
-<option value="6745.00">325 - BLR</option>
-<option value="6582.50">329 - HYD</option>
-<option value="6225.00">337 - MAA</option>
-<option value="8175.00">341 - KHI</option>
-<option value="7915.00">345 - LHE</option>
-<option value="8597.50">349 - ISB</option>
-<option value="4860.00">401 - SIN</option>
-<option value="4827.50">403 - SIN</option>
-<option value="4827.50">409 - SIN</option>
-<option value="4730.00">415 - KUL</option>
-<option value="4730.00">417 - KUL</option>
-<option value="7395.00">431 - DPS</option>
-<option value="6582.50">433 - CGK</option>
-<option value="6582.50">435 - CGK</option>
-<option value="13830.00">461 - MEL</option>
-<option value="13830.00">465 - MEL</option>
-<option value="13830.00">471 - SYD</option>
-<option value="13830.00">475 - SYD</option>
-<option value="10710.00">481 - PER</option>
-<option value="10710.00">483 - PER</option>
-<option value="5412.50">600 - HKG</option>
-<option value="4762.50">612 - KMG</option>
-<option value="8207.50">614 - PEK</option>
-<option value="5997.50">618 - TFU</option>
-<option value="9280.00">622 - KIX</option>
-<option value="6712.50">632 - TPE</option>
-<option value="6712.50">634 - TPE</option>
-<option value="5412.50">638 - HKG</option>
-<option value="10060.00">640 - NRT</option>
-<option value="10125.00">642 - NRT</option>
-<option value="9507.50">644 - NGO</option>
-<option value="8825.00">648 - FUK</option>
-<option value="9247.50">652 - ICN</option>
-<option value="9247.50">656 - ICN</option>
-<option value="9247.50">658 - ICN</option>
-<option value="10060.00">660 - HND</option>
-<option value="7525.00">662 - PVG</option>
-<option value="7460.00">664 - PVG</option>
-<option value="5900.00">668 - CAN</option>
-<option value="10742.50">670 - CTS</option>
-<option value="9280.00">672 - KIX</option>
-<option value="10060.00">676 - NRT</option>
-<option value="10060.00">682 - HND</option>
-<option value="14415.00">900 - IST</option>
-<option value="17600.00">910 - LHR</option>
-<option value="17600.00">916 - LHR</option>
-<option value="16365.00">920 - FRA</option>
-<option value="16365.00">922 - FRA</option>
-<option value="16007.50">924 - MUC</option>
-<option value="17080.00">930 - CDG</option>
-<option value="17047.50">934 - BRU</option>
-<option value="17112.50">936 - AMS</option>
-<option value="16495.00">940 - MXP</option>
-<option value="16332.50">950 - CPH</option>
-<option value="17275.00">954 - OSL</option>
-<option value="16657.50">960 - ARN</option>
-<option value="16495.00">970 - ZRH</option>
-<option value="3430.00">002 - UTH</option>
-<option value="3592.50">102 - CNX</option>
-<option value="3982.50">130 - CEI</option>
-<option value="3560.00">136 - CEI</option>
-<option value="3982.50">203 - HKT</option>
-<option value="3982.50">205 - HKT</option>
-<option value="3982.50">217 - HKT</option>
-<option value="3982.50">221 - HKT</option>
-<option value="3592.50">241 - KBV</option>
-<option value="3950.00">301 - RGN</option>
-<option value="3657.50">303 - RGN</option>
-<option value="6745.00">307 - CMB</option>
-<option value="6257.50">309 - KTM</option>
-<option value="5315.00">313 - CCU</option>
-<option value="6257.50">319 - KTM</option>
-<option value="7557.50">331 - DEL</option>
-<option value="7557.50">335 - DEL</option>
-<option value="5282.50">339 - DAC</option>
-<option value="7882.50">343 - AMD</option>
-<option value="7915.00">345 - LHE</option>
-<option value="7850.00">351 - BOM</option>
-<option value="4860.00">401 - SIN</option>
-<option value="4827.50">407 - SIN</option>
-<option value="4827.50">413 - SIN</option>
-<option value="4210.00">425 - PEN</option>
-<option value="7395.00">439 - DPS</option>
-<option value="3657.50">550 - SGN</option>
-<option value="3657.50">556 - SGN</option>
-<option value="4210.00">560 - HAN</option>
-<option value="4210.00">564 - HAN</option>
-<option value="3527.50">570 - VTE</option>
-<option value="3527.50">574 - VTE</option>
-<option value="3560.00">584 - KTI</option>
-<option value="3560.00">586 - KTI</option>
-<option value="5445.00">602 - HKG</option>
-<option value="6647.50">608 - SZX</option>
-<option value="6225.00">620 - MNL</option>
-<option value="6192.50">624 - MNL</option>
-<option value="5510.00">628 - HKG</option>
-<option value="6615.00">630 - KHH</option>
-<option value="6810.00">636 - TPE</option>
-<option value="8175.00">674 - PEK</option>
-<option value="6777.50">686 - CGK</option>
-<option value="6907.50">694 - CSX</option>
-<option value="5315.00">020/106 - UBP/CNX</option>
-<option value="4730.00">040/042 - KKC/KKC</option>
-<option value="5347.50">044/267 - KKC/HDY</option>
-<option value="5542.50">104/215 - CNX/HKT</option>
-<option value="5445.00">110/249 - CNX/KBV</option>
-<option value="4957.50">112/008 - CNX/UTH</option>
-<option value="5380.00">201/004 - HKT/UTH</option>
-<option value="5445.00">207/028 - HKT/UBP</option>
-<option value="4860.00">211/120 - HKT/CNX</option>
-<option value="4860.00">259/132 - HDY/CEI</option>
-<option value="5282.50">263/046 - HDY/KKC</option>
+              <option value="7557.50">315 DEL</option>
+<option value="7850.00">317 BOM</option>
+<option value="5250.00">321 DAC</option>
+<option value="7557.50">323 DEL</option>
+<option value="6745.00">325 BLR</option>
+<option value="6582.50">329 HYD</option>
+<option value="6225.00">337 MAA</option>
+<option value="8175.00">341 KHI</option>
+<option value="7915.00">345 LHE</option>
+<option value="8597.50">349 ISB</option>
+<option value="4860.00">401 SIN</option>
+<option value="4827.50">403 SIN</option>
+<option value="4827.50">409 SIN</option>
+<option value="4730.00">415 KUL</option>
+<option value="4730.00">417 KUL</option>
+<option value="7395.00">431 DPS</option>
+<option value="6582.50">433 CGK</option>
+<option value="6582.50">435 CGK</option>
+<option value="13830.00">461 MEL</option>
+<option value="13830.00">465 MEL</option>
+<option value="13830.00">471 SYD</option>
+<option value="13830.00">475 SYD</option>
+<option value="10710.00">481 PER</option>
+<option value="10710.00">483 PER</option>
+<option value="5412.50">600 HKG</option>
+<option value="4762.50">612 KMG</option>
+<option value="8207.50">614 PEK</option>
+<option value="5997.50">618 TFU</option>
+<option value="9280.00">622 KIX</option>
+<option value="6712.50">632 TPE</option>
+<option value="6712.50">634 TPE</option>
+<option value="5412.50">638 HKG</option>
+<option value="10060.00">640 NRT</option>
+<option value="10125.00">642 NRT</option>
+<option value="9507.50">644 NGO</option>
+<option value="8825.00">648 FUK</option>
+<option value="9247.50">652 ICN</option>
+<option value="9247.50">656 ICN</option>
+<option value="9247.50">658 ICN</option>
+<option value="10060.00">660 HND</option>
+<option value="7525.00">662 PVG</option>
+<option value="7460.00">664 PVG</option>
+<option value="5900.00">668 CAN</option>
+<option value="10742.50">670 CTS</option>
+<option value="9280.00">672 KIX</option>
+<option value="10060.00">676 NRT</option>
+<option value="10060.00">682 HND</option>
+<option value="14415.00">900 IST</option>
+<option value="17600.00">910 LHR</option>
+<option value="17600.00">916 LHR</option>
+<option value="16365.00">920 FRA</option>
+<option value="16365.00">922 FRA</option>
+<option value="16007.50">924 MUC</option>
+<option value="17080.00">930 CDG</option>
+<option value="17047.50">934 BRU</option>
+<option value="17112.50">936 AMS</option>
+<option value="16495.00">940 MXP</option>
+<option value="16332.50">950 CPH</option>
+<option value="17275.00">954 OSL</option>
+<option value="16657.50">960 ARN</option>
+<option value="16495.00">970 ZRH</option>
+<option value="3430.00">002 UTH</option>
+<option value="3592.50">102 CNX</option>
+<option value="3982.50">130 CEI</option>
+<option value="3560.00">136 CEI</option>
+<option value="3982.50">203 HKT</option>
+<option value="3982.50">205 HKT</option>
+<option value="3982.50">217 HKT</option>
+<option value="3982.50">221 HKT</option>
+<option value="3592.50">241 KBV</option>
+<option value="3950.00">301 RGN</option>
+<option value="3657.50">303 RGN</option>
+<option value="6745.00">307 CMB</option>
+<option value="6257.50">309 KTM</option>
+<option value="5315.00">313 CCU</option>
+<option value="6257.50">319 KTM</option>
+<option value="7557.50">331 DEL</option>
+<option value="7557.50">335 DEL</option>
+<option value="5282.50">339 DAC</option>
+<option value="7882.50">343 AMD</option>
+<option value="7915.00">345 LHE</option>
+<option value="7850.00">351 BOM</option>
+<option value="4860.00">401 SIN</option>
+<option value="4827.50">407 SIN</option>
+<option value="4827.50">413 SIN</option>
+<option value="4210.00">425 PEN</option>
+<option value="7395.00">439 DPS</option>
+<option value="3657.50">550 SGN</option>
+<option value="3657.50">556 SGN</option>
+<option value="4210.00">560 HAN</option>
+<option value="4210.00">564 HAN</option>
+<option value="3527.50">570 VTE</option>
+<option value="3527.50">574 VTE</option>
+<option value="3560.00">584 KTI</option>
+<option value="3560.00">586 KTI</option>
+<option value="5445.00">602 HKG</option>
+<option value="6647.50">608 SZX</option>
+<option value="6225.00">620 MNL</option>
+<option value="6192.50">624 MNL</option>
+<option value="5510.00">628 HKG</option>
+<option value="6615.00">630 KHH</option>
+<option value="6810.00">636 TPE</option>
+<option value="8175.00">674 PEK</option>
+<option value="6777.50">686 CGK</option>
+<option value="6907.50">694 CSX</option>
+<option value="5315.00">020/106 UBP/CNX</option>
+<option value="4730.00">040/042 KKC/KKC</option>
+<option value="5347.50">044/267 KKC/HDY</option>
+<option value="5542.50">104/215 CNX/HKT</option>
+<option value="5445.00">110/249 CNX/KBV</option>
+<option value="4957.50">112/008 CNX/UTH</option>
+<option value="5380.00">201/004 HKT/UTH</option>
+<option value="5445.00">207/028 HKT/UBP</option>
+<option value="4860.00">211/120 HKT/CNX</option>
+<option value="4860.00">259/132 HDY/CEI</option>
+<option value="5282.50">263/046 HDY/KKC</option>
             </select>
+        <button onclick="removeRow(this)" class="bg-red-100 text-red-600 px-3 rounded">×</button>
+            </div>
         </div>
 
-        <div class="mt-4 p-4 bg-blue-50 rounded-xl text-center">
-            <p class="text-sm text-gray-600">Total Allowance (รวมเงินเดือน):</p>
-            <span id="totalAmount" class="text-2xl font-bold text-blue-600">0</span>
-            <span class="text-lg font-bold text-blue-600"> THB</span>
+       <button id="addFlightBtn" class="w-full mt-4 border-2 border-dashed border-gray-300 p-2 rounded text-gray-500 hover:bg-gray-50">
+            + Add flight
+        </button>
+
+        <div class="mt-6 p-4 bg-blue-50 rounded-xl text-center">
+            <p class="text-sm text-blue-600">Total Allowance:</p>
+            <span id="totalAmount" class="text-3xl font-bold text-blue-700">0</span>
         </div>
     </div>
 
     <script>
-        const baseSalaryInput = document.getElementById('baseSalary');
-        const flightSelect = document.getElementById('flightSelect');
-        const totalDisplay = document.getElementById('totalAmount');
+        const flightContainer = document.getElementById('flightContainer');
+        const addFlightBtn = document.getElementById('addFlightBtn');
+        const baseSalary = document.getElementById('baseSalary');
+        const totalAmount = document.getElementById('totalAmount');
 
         function calculate() {
-            const base = parseFloat(baseSalaryInput.value) || 0;
-            const flight = parseFloat(flightSelect.value) || 0;
-            const total = base + flight;
-            
-            totalDisplay.innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            let total = parseFloat(baseSalary.value) || 0;
+            document.querySelectorAll('.flight-select').forEach(select => {
+                total += parseFloat(select.value) || 0;
+            });
+            totalAmount.innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         }
 
-        baseSalaryInput.addEventListener('input', calculate);
-        flightSelect.addEventListener('change', calculate);
+        // เพิ่มแถวใหม่
+        addFlightBtn.addEventListener('click', () => {
+            const newRow = document.createElement('div');
+            newRow.className = 'flight-row flex gap-2';
+            newRow.innerHTML = `
+                <select class="flight-select w-full border p-2 rounded">
+                    <option value="0">Select a flight...</option>
+                    <option value="7850.50">315 - DEL (7,850.50)</option>
+                    <option value="4860.00">401 - SIN (4,860.00)</option>
+                    <option value="13830.00">461 - MEL (13,830.00)</option>
+                </select>
+                <button onclick="removeRow(this)" class="bg-red-100 text-red-600 px-3 rounded">×</button>
+            `;
+            flightContainer.appendChild(newRow);
+            newRow.querySelector('select').addEventListener('change', calculate);
+        });
+
+        function removeRow(btn) {
+            btn.parentElement.remove();
+            calculate();
+        }
+
+        // Event Listeners
+        baseSalary.addEventListener('input', calculate);
+        document.querySelector('.flight-select').addEventListener('change', calculate);
     </script>
 </body>
 </html>
