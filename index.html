@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allowance Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Allowance App</title>
+    <!-- Apple Home Screen Icon -->
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3067/3067423.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <style>
-        /* CSS ปรับ UI ให้ดูสะอาดและโปร่งขึ้น */
-        .choices__inner { border-radius: 0.5rem !important; border: 1px solid #d1d5db !important; padding: 6px 10px !important; }
-        .choices__list--dropdown { border-radius: 0.5rem !important; margin-top: 5px; }
-        .choices__list--dropdown .choices__item--selectable { padding: 12px !important; font-size: 15px; }
-        .choices__list--dropdown .choices__group-heading { font-weight: bold; color: #2563eb; background: #eff6ff; padding: 8px 12px; }
-        .flight-price { border: 1px solid #d1d5db; }
+        .choices { margin-bottom: 0 !important; width: 100%; }
+        .choices__inner { 
+            border-radius: 1rem !important; 
+            border: 2px solid #e5e7eb !important; 
+            padding: 10px 15px !important; 
+            min-height: 55px !important; 
+            display: flex;
+            align-items: center;
+        }
+        .choices__list--dropdown { border-radius: 1rem !important; margin-top: 5px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .choices__list--dropdown .choices__item--selectable { padding: 18px !important; font-size: 16px !important; }
+        .choices__list--dropdown .choices__group-heading { font-size: 14px; padding: 12px 15px; color: #2563eb; background: #eff6ff; }
     </style>
 </head>
-<body class="bg-gray-100 p-4">
-    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6">
-        <h1 class="text-xl font-bold mb-4">Allowance Calculator</h1>
+<body class="bg-gray-50 p-4">
+    <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl p-6">
+        <h1 class="text-2xl font-black mb-6 text-gray-800">Allowance</h1>
 
         <div class="mb-6">
-            <label class="block font-bold mb-1">Base Salary (THB):</label>
-            <input id="baseSalary" type="number" class="w-full border p-2 rounded" placeholder="0" oninput="calculate()">
+            <label class="block font-bold mb-2 text-gray-500 text-xs uppercase tracking-widest">Base Salary (THB)</label>
+            <input id="baseSalary" type="number" inputmode="decimal" class="w-full border-2 border-gray-100 p-4 rounded-2xl text-xl font-bold" placeholder="0" oninput="calculate(); saveData();">
         </div>
 
-        <div id="flightContainer" class="space-y-3">
-            <h2 class="font-bold">Select Flights</h2>
+        <div id="flightContainer" class="space-y-4">
+            <h2 class="font-bold text-gray-800">Flights</h2>
             <div class="flight-row flex gap-2 items-center">
-                <select class="flight-select w-full border p-2 rounded" onchange="updatePrice(this)">
+                <select class="flight-select w-full" onchange="updatePrice(this); saveData();">
                     <option value="0">Select a flight...</option>
                     <optgroup label="CLMV">
                         <option value="3950.00">301 - RGN</option>
@@ -134,45 +142,61 @@
                         <option value="16495.00">970 - ZRH</option>
                     </optgroup>
                </select>
-                <input type="text" class="flight-price w-24 border p-2 rounded bg-gray-100 text-right" value="0" readonly>
+                <input type="text" class="flight-price w-24 p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 text-right font-bold text-lg" value="0" readonly>
             </div>
         </div>
 
-        <button id="addFlightBtn" class="w-full mt-4 border-2 border-dashed border-gray-300 p-2 rounded text-gray-500 hover:bg-gray-100">
-            + Add flight
-        </button>
-
-        <div class="mt-6 p-4 bg-blue-50 rounded-xl text-center">
-            <p class="text-sm text-blue-600">Total Amount:</p>
-            <span id="totalAmount" class="text-3xl font-bold text-blue-700">0</span>
+        <div class="flex gap-2 mt-6">
+            <button id="addFlightBtn" class="flex-1 bg-gray-100 p-4 rounded-2xl font-bold text-gray-600 hover:bg-gray-200">+ Add Flight</button>
+            <button id="resetBtn" class="px-6 py-4 bg-red-50 text-red-500 rounded-2xl font-bold hover:bg-red-100">Reset</button>
         </div>
 
-        <div class="mt-8 text-center text-gray-500 text-xs italic">
-            <p>This is just an estimation. There might be some discrepancies xoxo.</p>
+        <div class="mt-8 p-6 bg-blue-600 rounded-3xl text-center shadow-lg shadow-blue-200">
+            <p class="text-blue-100 text-sm font-medium mb-1">TOTAL AMOUNT</p>
+            <span id="totalAmount" class="text-4xl font-black text-white">0.00</span>
         </div>
 
-        <div class="mt-6 p-4 border-t border-dashed border-gray-300">
-            <h3 class="font-bold text-sm text-gray-700 mb-2">How to add to Home Screen:</h3>
-            <ul class="text-xs text-gray-600 space-y-1">
-                <li><strong>iPhone (Safari):</strong> Tap the <strong>Share</strong> button and select <strong>"Add to Home Screen"</strong>.</li>
-                <li><strong>Android (Chrome):</strong> Tap the <strong>three dots</strong> menu and select <strong>"Add to Home screen"</strong>.</li>
-            </ul>
+        <p class="mt-8 text-center text-gray-400 text-[10px] italic">This is just an estimation. There might be some discrepancies xoxo.</p>
+        
+        <div class="mt-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+            <p class="text-[11px] text-gray-500 text-center leading-relaxed">
+                To install: Tap the <strong>Share</strong> button (bottom) and select <strong>"Add to Home Screen"</strong>.
+            </p>
         </div>
     </div>
 
 <script>
-    // ฟังก์ชันสร้าง Choices
     function initChoices(element) {
-        return new Choices(element, { searchEnabled: true, itemSelectText: '', shouldSort: false });
+        return new Choices(element, { searchEnabled: true, itemSelectText: '', shouldSort: false, position: 'bottom' });
     }
 
-    // เริ่มต้นตัวแรก
-    let mainSelect = initChoices(document.querySelector('.flight-select'));
+    function saveData() {
+        const flights = Array.from(document.querySelectorAll('.flight-select')).map(s => s.value);
+        localStorage.setItem('baseSalary', document.getElementById('baseSalary').value);
+        localStorage.setItem('flights', JSON.stringify(flights));
+    }
+
+    window.onload = () => {
+        const savedSalary = localStorage.getItem('baseSalary');
+        if (savedSalary) document.getElementById('baseSalary').value = savedSalary;
+        const savedFlights = JSON.parse(localStorage.getItem('flights'));
+        if (savedFlights && savedFlights.length > 0) {
+            savedFlights.forEach((val, index) => {
+                if(index === 0) {
+                    const firstSelect = document.querySelector('.flight-select');
+                    firstSelect.value = val;
+                    updatePrice(firstSelect);
+                } else {
+                    addFlightRow(val);
+                }
+            });
+        }
+        calculate();
+    };
 
     function updatePrice(selectElement) {
         const row = selectElement.closest('.flight-row');
         const priceInput = row.querySelector('.flight-price');
-        // ใส่คอมม่าที่นี่
         priceInput.value = parseFloat(selectElement.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         calculate();
     }
@@ -181,29 +205,31 @@
         let base = parseFloat(document.getElementById('baseSalary').value) || 0;
         let total = base;
         document.querySelectorAll('.flight-price').forEach(input => {
-            // ลบคอมม่าออกก่อนบวกเลข
             total += parseFloat(input.value.replace(/,/g, '')) || 0;
         });
         document.getElementById('totalAmount').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
     }
 
-    document.getElementById('addFlightBtn').addEventListener('click', () => {
+    function addFlightRow(selectedValue = "0") {
         const container = document.getElementById('flightContainer');
         const newRow = document.createElement('div');
         newRow.className = 'flight-row flex gap-2 items-center mt-2';
-        
-        // ก๊อปปี้ HTML จากช่องแรกมาใช้เพื่อให้รายการครบ
         const originalSelect = document.querySelector('.flight-select');
         newRow.innerHTML = `
-            <select class="flight-select w-full border p-2 rounded" onchange="updatePrice(this)">
-                ${originalSelect.innerHTML}
-            </select>
-            <input type="text" class="flight-price w-24 border p-2 rounded bg-gray-100 text-right" value="0" readonly>
-            <button onclick="this.parentElement.remove(); calculate();" class="text-red-500 font-bold px-2">×</button>
+            <select class="flight-select w-full" onchange="updatePrice(this); saveData();">${originalSelect.innerHTML}</select>
+            <input type="text" class="flight-price w-24 p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 text-right font-bold text-lg" value="0" readonly>
+            <button onclick="this.parentElement.remove(); calculate(); saveData();" class="text-red-400 font-bold px-2">×</button>
         `;
         container.appendChild(newRow);
-        initChoices(newRow.querySelector('.flight-select'));
-    });
+        const sel = newRow.querySelector('.flight-select');
+        sel.value = selectedValue;
+        initChoices(sel);
+        updatePrice(sel);
+    }
+
+    document.getElementById('addFlightBtn').addEventListener('click', () => addFlightRow());
+    document.getElementById('resetBtn').addEventListener('click', () => { localStorage.clear(); location.reload(); });
+    initChoices(document.querySelector('.flight-select'));
 </script>
 </body>
 </html>
