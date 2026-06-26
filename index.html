@@ -19,7 +19,7 @@
             </div>
             <div class="flex justify-between items-center">
                 <span>Base Salary (THB):</span>
-                <input type="number" class="border p-1 rounded w-20" placeholder="0">
+                <input id="Base Salary" type="number" class="border p-1 rounded w-28" placeholder="0">
             </div>
         </div>
 
@@ -145,8 +145,30 @@
 <option value="4860.00">259/132 - HDY/CEI</option>
 <option value="5282.50">263/046 - HDY/KKC</option>
             </select>
-            <button class="w-full bg-blue-500 text-white py-2 rounded-lg font-bold">+ Add flight</button>
+        </div>
+
+        <div class="mt-4 p-4 bg-blue-50 rounded-xl text-center">
+            <p class="text-sm text-gray-600">Total Allowance (รวมเงินเดือน):</p>
+            <span id="totalAmount" class="text-2xl font-bold text-blue-600">0</span>
+            <span class="text-lg font-bold text-blue-600"> THB</span>
         </div>
     </div>
+
+    <script>
+        const baseSalaryInput = document.getElementById('baseSalary');
+        const flightSelect = document.getElementById('flightSelect');
+        const totalDisplay = document.getElementById('totalAmount');
+
+        function calculate() {
+            const base = parseFloat(baseSalaryInput.value) || 0;
+            const flight = parseFloat(flightSelect.value) || 0;
+            const total = base + flight;
+            
+            totalDisplay.innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        baseSalaryInput.addEventListener('input', calculate);
+        flightSelect.addEventListener('change', calculate);
+    </script>
 </body>
 </html>
