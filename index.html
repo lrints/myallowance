@@ -17,20 +17,21 @@
 
         <div id="flightContainer" class="space-y-3">
             <h2 class="font-bold">Select Flights</h2>
-            
             <div class="flight-row flex gap-2 items-center">
                 <select class="flight-select w-full border p-2 rounded" onchange="updatePrice(this)">
                     <option value="0">Select a flight...</option>
                     <optgroup label="CLMV">
-                        <option value="3950">301 - RGN</option>
-                        <option value="3657.5">303 - RGN</option>
+                        <option value="3950">301 - RGN (3,950)</option>
+                        <option value="3657.5">303 - RGN (3,657.5)</option>
+                        <option value="4210">560 - HAN (4,210)</option>
                     </optgroup>
                     <optgroup label="Domestic">
-                        <option value="3430">002 - UTH</option>
-                        <option value="3592.5">102 - CNX</option>
+                        <option value="3430">002 - UTH (3,430)</option>
+                        <option value="3592.5">102 - CNX (3,592.5)</option>
+                        <option value="3982.5">203 - HKT (3,982.5)</option>
                     </optgroup>
                 </select>
-                <input type="text" class="flight-price w-24 border p-2 rounded bg-gray-50 text-right font-bold" value="0" readonly>
+                <input type="number" class="flight-price w-24 border p-2 rounded bg-gray-100 text-right" value="0" readonly>
             </div>
         </div>
 
@@ -45,16 +46,18 @@
     </div>
 
     <script>
-        function updatePrice(selectElement) {
-            const priceInput = selectElement.parentElement.querySelector('.flight-price');
-            priceInput.value = parseFloat(selectElement.value).toLocaleString();
+        function updatePrice(select) {
+            const row = select.parentElement;
+            const priceInput = row.querySelector('.flight-price');
+            priceInput.value = select.value;
             calculate();
         }
 
         function calculate() {
-            let total = parseFloat(document.getElementById('baseSalary').value) || 0;
+            let base = parseFloat(document.getElementById('baseSalary').value) || 0;
+            let total = base;
             document.querySelectorAll('.flight-price').forEach(input => {
-                total += parseFloat(input.value.replace(/,/g, '')) || 0;
+                total += parseFloat(input.value) || 0;
             });
             document.getElementById('totalAmount').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         }
@@ -67,16 +70,16 @@
                 <select class="flight-select w-full border p-2 rounded" onchange="updatePrice(this)">
                     <option value="0">Select a flight...</option>
                     <optgroup label="CLMV">
-                        <option value="3950">301 - RGN</option>
-                        <option value="3657.5">303 - RGN</option>
+                        <option value="3950">301 - RGN (3,950)</option>
+                        <option value="3657.5">303 - RGN (3,657.5)</option>
                     </optgroup>
                     <optgroup label="Domestic">
-                        <option value="3430">002 - UTH</option>
-                        <option value="3592.5">102 - CNX</option>
+                        <option value="3430">002 - UTH (3,430)</option>
+                        <option value="3592.5">102 - CNX (3,592.5)</option>
                     </optgroup>
                 </select>
-                <input type="text" class="flight-price w-24 border p-2 rounded bg-gray-50 text-right font-bold" value="0" readonly>
-                <button onclick="this.parentElement.remove(); calculate();" class="bg-red-100 text-red-600 px-2 rounded">×</button>
+                <input type="number" class="flight-price w-24 border p-2 rounded bg-gray-100 text-right" value="0" readonly>
+                <button onclick="this.parentElement.remove(); calculate();" class="text-red-500 font-bold px-2">×</button>
             `;
             container.appendChild(newRow);
         });
