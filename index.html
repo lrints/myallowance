@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        .flight-row { display: grid; grid-template-columns: 1fr 90px 30px; gap: 8px; align-items: center; margin-bottom: 8px; }
+        .flight-row { display: grid; grid-template-columns: 1fr 100px 30px; gap: 8px; align-items: center; margin-bottom: 8px; }
         .choices { width: 100% !important; margin-bottom: 0 !important; }
         .choices__inner { border-radius: 12px !important; border: 2px solid #e5e7eb !important; padding: 8px 12px !important; min-height: 50px !important; display: flex; align-items: center; }
         .choices__list--dropdown { border-radius: 12px !important; margin-top: 5px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
@@ -164,7 +164,7 @@
             </div>
         </div>
 
-        <button id="addFlightBtn" class="mt-6 w-full py-3 bg-blue-500 text-white rounded-2xl font-bold text-sm shadow-md active:scale-95 transition">+ Add Flight
+        <button id="addFlightBtn" class="mt-6 w-full py-3 bg-[#370E62] text-white rounded-2xl font-bold text-sm shadow-md active:scale-95 transition hover:bg-[#250945]">+ Add Flight
         </button>
 
         <div class="mt-3 text-center">
@@ -204,21 +204,28 @@
     }
 
     function saveAsImage() {
-    const element = document.querySelector('.max-w-md'); 
-    const date = new Date();
-    const formattedDate = date.toLocaleDateString('en-GB').replace(/\//g, '-');
-    
+        const element = document.querySelector('.max-w-md'); // กล่องสีขาวหลัก
     html2canvas(element, {
-        scale: 2, 
-        backgroundColor: null,
-        logging: false
+        scale: 2,           // เพิ่มความละเอียดภาพ
+        backgroundColor: null, 
+        logging: false,
+        // เพิ่มบรรทัดนี้: ให้แคปโดยพิจารณาจากขนาดที่แท้จริง
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+        // เพิ่มพื้นที่เผื่อรอบข้าง (ถ้ายังตัดอยู่ ให้เพิ่มเลขตรงนี้)
+        x: 0,
+        y: 0,
+        width: element.offsetWidth + 20, 
+        height: element.offsetHeight + 20
     }).then(canvas => {
+        const date = new Date();
+        const formattedDate = date.toLocaleDateString('en-GB').replace(/\//g, '-');
         const link = document.createElement('a');
         link.download = `Allowance-${formattedDate}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
     });
-    }
+}
 
     function updatePrice(selectElement) { 
         const row = selectElement.closest('.flight-row'); 
