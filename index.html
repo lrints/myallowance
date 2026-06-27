@@ -9,134 +9,177 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <style>
-        .flight-row { display: grid; grid-template-columns: 1fr 90px 30px; gap: 8px; align-items: center; }
+        /* จัด Layout ให้ทุกแถวมีขนาดเท่ากันเป๊ะ */
+        /* แถวแรกที่มีปุ่มลบไม่ได้แสดง จะใช้ empty div หรือ display แบบนี้แทน */
+        .flight-row { 
+            display: grid; 
+            grid-template-columns: 1fr 90px 30px; /* 1fr สำหรับไฟล์ท, 90px สำหรับราคา, 30px สำหรับปุ่มกากบาท */
+            gap: 8px; 
+            align-items: center; 
+            margin-bottom: 8px;
+        }
+
         .choices { width: 100% !important; margin-bottom: 0 !important; }
         .choices__inner { 
-            border-radius: 12px !important; border: 2px solid #e5e7eb !important; 
-            padding: 8px 12px !important; min-height: 50px !important; display: flex; align-items: center;
+            border-radius: 12px !important; 
+            border: 2px solid #e5e7eb !important; 
+            padding: 8px 12px !important; 
+            min-height: 50px !important; 
+            display: flex; 
+            align-items: center;
         }
+        
         .choices__list--dropdown { border-radius: 12px !important; margin-top: 5px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
         .choices__list--dropdown .choices__item--selectable { padding: 14px 16px !important; font-size: 15px !important; }
         .choices__list--dropdown .choices__group-heading { font-size: 12px !important; padding: 10px 16px !important; color: #2563eb; background: #eff6ff; }
-        .flight-price { width: 100% !important; padding: 10px 5px !important; font-size: 14px !important; border: 2px solid #e5e7eb; border-radius: 12px; background: #f9fafb; text-align: right; font-weight: bold; }
+        
+        /* ช่องราคาที่คงขนาดไว้ที่ 90px เพื่อให้เท่ากันทุกแถว */
+        .flight-price { 
+            width: 100% !important; 
+            padding: 10px 8px !important; 
+            font-size: 14px !important; 
+            border: 2px solid #e5e7eb; 
+            border-radius: 12px; 
+            background: #f9fafb; 
+            text-align: right; 
+            font-weight: bold; 
+        }
     </style>
 </head>
 <body class="bg-gray-100 p-4">
     <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl p-6">
         <h1 class="text-2xl font-black mb-6 text-gray-800">Cabin Crew Allowance Calculator</h1>
 
+<div class="mb-6 bg-gray-50 border border-gray-200 rounded-2xl p-4">
+    <button type="button" class="flex justify-between items-center w-full font-bold text-gray-700 text-sm" onclick="this.nextElementSibling.classList.toggle('hidden')">
+        <span>Reference Rates (ASY)</span>
+        <span class="text-xs text-gray-400">Tap to show/hide</span>
+    </button>
+    <div class="mt-3 grid grid-cols-2 gap-2 text-[11px] text-gray-600">
+        <div class="bg-white p-2 rounded-lg border border-gray-100">Allowance/hr: <span class="font-bold">650</span></div>
+        <div class="bg-white p-2 rounded-lg border border-gray-100">Trans/flight: <span class="font-bold">1,000</span></div>
+        <div class="bg-white p-2 rounded-lg border border-gray-100">Landing/sec: <span class="font-bold">250</span></div>
+        <div class="bg-white p-2 rounded-lg border border-gray-100">WOCL: <span class="font-bold">500</span></div>
+    </div>
+</div>
+        
         <div class="mb-6">
             <label class="block font-bold mb-2 text-gray-400 text-[11px] uppercase tracking-widest">Base Salary (THB)</label>
             <input id="baseSalary" type="number" inputmode="decimal" class="w-full border-2 border-gray-100 p-4 rounded-2xl text-xl font-bold" placeholder="0" oninput="calculate(); saveData();">
         </div>
 
-        <div id="flightContainer" class="space-y-4">
-            <h2 class="font-bold text-gray-800">Flights</h2>
-            <div class="flight-row flex gap-2 items-center">
-                <select class="flight-select w-full" onchange="updatePrice(this); saveData();">
+       <div id="flightContainer" class="space-y-3">
+    <h2 class="font-bold text-gray-800 text-sm">Flights</h2>
+    
+    <div class="flight-row">
+        <select class="flight-select" onchange="updatePrice(this); saveData();">
                     <option value="0">Select a flight...</option>
                     <optgroup label="CLMV">
-                        <option value="3950.00">301 - RGN</option>
-                        <option value="3657.50">303 - RGN</option>
-                        <option value="3657.50">550/556 - SGN</option>
-                        <option value="4210.00">560/564 - HAN</option>
-                        <option value="3527.50">570/574 - VTE</option>
-                        <option value="3560.00">584/586 - KTI</option>
+                        <option value="3450.00">301 RGN</option>
+                        <option value="3395.83">303 RGN</option>
+                        <option value="3395.83">550/556 SGN</option>
+                        <option value="3883.33">560/564 HAN</option>
+                        <option value="3179.17">570/574 VTE</option>
+                        <option value="3233.33">584/586 KTI</option>
                     </optgroup>
                     <optgroup label="DOMESTIC">
-                        <option value="3430.00">002 - UTH</option>
-                        <option value="3592.50">102 - CNX</option>
-                        <option value="3982.50">130 - CEI</option>
-                        <option value="3560.00">136 - CEI</option>
-                        <option value="3982.50">203/205/217/221 - HKT</option>
-                        <option value="3592.50">241 - KBV</option>
-                        <option value="5315.00">020/106 - UBP/CNX</option>
-                        <option value="4730.00">040/042 - KKC/KKC</option>
-                        <option value="5347.50">044/267 - KKC/HDY</option>
-                        <option value="5542.50">104/215 - CNX/HKT</option>
-                        <option value="5445.00">110/249 - CNX/KBV</option>
-                        <option value="4957.50">112/008 - CNX/UTH</option>
-                        <option value="5380.00">201/004 - HKT/UTH</option>
-                        <option value="5445.00">207/028 - HKT/UBP</option>
-                        <option value="4860.00">211/120 - HKT/CNX</option>
-                        <option value="4860.00">259/132 - HDY/CEI</option>
-                        <option value="5282.50">263/046 - HDY/KKC</option>
-                    </optgroup>
-                    <optgroup label="CHINA">
-                        <option value="6647.5">608 - SZX</option>
-                        <option value="5997.5">618 - TFU</option>
-                        <option value="6615">630 - KHH</option>
-                        <option value="6907.5">694 - CSX</option>
-                    </optgroup>
-                    <optgroup label="INDIA-PAKISTAN">
-                        <option value="6745.00">307 - CMB</option>
-                        <option value="5315.00">313 - CCU</option>
-                        <option value="7557.50">315/323/331/335 - DEL</option>
-                        <option value="7850.00">317/351 - BOM</option>
-                        <option value="6745.00">325 - BLR</option>
-                        <option value="6582.50">329 - HYD</option>
-                        <option value="6225.00">337 - MAA</option>
-                        <option value="8175.00">341 - KHI</option>
-                        <option value=7882.50">343 - AMD</option>
-                        <option value="7915.00">345 - LHE</option>
-                        <option value="8597.50">349 - ISB</option>
+                        <option value="3016.67">002 UTH</option>
+                        <option value="3287.50">102 CNX</option>
+                        <option value="3504.17">130 CEI</option>
+                        <option value="3233.33">136 CEI</option>
+                        <option value="3504.17">203/205/217/221 HKT</option>
+                        <option value="3287.50">241 KBV</option>
+                        <option value="5358.33">020/106 UBP/CNX</option>
+                        <option value="4816.67">040/042 KKC/KKC</option>
+                        <option value="5412.50">044/267 KKC/HDY</option>
+                        <option value="5737.50">104/215 CNX/HKT</option>
+                        <option value="5575.00">110/249 CNX/KBV</option>
+                        <option value="5195.83">112/008 CNX/UTH</option>
+                        <option value="5466.67">201/004 HKT/UTH</option>
+                        <option value="5575.00">207/028 HKT/UBP</option>
+                        <option value="5033.33">211/120 HKT/CNX</option>
+                        <option value="5033.33">259/132 HDY/CEI</option>
+                        <option value="5304.17">263/046 HDY/KKC</option>
                     </optgroup>
                     <optgroup label="1-3 HRS">
-                        <option value="5250.00">321 - DAC</option>
-                        <option value="5282.50">339 - DAC</option>
-                        <option value="4860.00">401 - SIN</option>
-                        <option value="4827.50">403/407/409/413 - SIN</option>
-                        <option value="4730.00">415/417 - KUL</option>
-                        <option value="4210.00">425 - PEN</option>
-                        <option value="5412.50">600/638 - HKG</option>
-                        <option value="5445.00">602 - HKG</option>
-                        <option value="4762.50">612 - KMG</option>
-                        <option value="5510.00">628 - HKG</option>
-                        <option value="5900.00">668 - CAN</option>
+                        <option value="4750.00">321 DAC</option>
+                        <option value="5304.17">339 DAC</option>
+                        <option value="4533.33">401 SIN</option>
+                        <option value="4479.17">403/407/409/413 SIN</option>
+                        <option value="4316.67">415/417 KUL</option>
+                        <option value="3883.33">425 PEN</option>
+                        <option value="5020.83">600/638 HKG</option>
+                        <option value="5075.00">602 HKG</option>
+                        <option value="4370.83">612 KMG</option>
+                        <option value="5183.33">628 HKG</option>
+                        <option value="5400.00">668 CAN</option>
                     </optgroup>
                     <optgroup label="3-5 HRS">
-                        <option value="6257.50">309/319 - KTM</option>
-                        <option value="7395.00">431 - DPS</option>
-                        <option value="6582.50">433/435 - CGK</option>
-                        <option value="7395.00">439 - DPS</option>
-                        <option value="8207.50">614 - PEK</option>
-                        <option value="6225.00">620 - MNL</option>
-                        <option value="6192.50">624 - MNL</option>
-                        <option value="6712.50">632/634 - TPE</option>
-                        <option value="6810.00">636 - TPE</option>
-                        <option value="7525.00">662 - PVG</option>
-                        <option value="7460.00">664 - PVG</option>
-                        <option value="8175.00">674 - PEK</option>
-                        <option value="6777.50">686 - CGK</option>
+                        <option value="5995.83">309/319 KTM</option>
+                        <option value="5995.83">319 KTM</option>
+                        <option value="7025.00">431/439 DPS</option>
+                        <option value="6104.17">433/435 CGK</option>
+                        <option value="6712.50">608 SZX</option>
+                        <option value="7945.83">614 PEK</option>
+                        <option value="5562.50">618 TFU</option>
+                        <option value="5941.67">620 MNL</option>
+                        <option value="5887.50">624 MNL</option>
+                        <option value="6158.33">630 KHH</option>
+                        <option value="6320.83">632/634 TPE</option>
+                        <option value="6483.33">636 TPE</option>
+                        <option value="7741.67">662 PVG</option>
+                        <option value="7633.33">664 PVG</option>
+                        <option value="8391.67">674 PEK</option>
+                        <option value="6429.17">686 CGK</option>
+                        <option value="6645.83">694 CSX</option>
+                    </optgroup>
+                    <optgroup label="INDIA-PAKISTAN">
+                        <option value="6375.00">307 CMB</option>
+                        <option value="4858.33">313 CCU</option>
+                        <option value="7795.83">315/331/335 DEL</option>
+                        <option value="7850.00">317/351 BOM</option>
+                        <option value="7295.83">323 DEL</option>
+                        <option value="6875.00">325 BLR</option>
+                        <option value="6604.17">329 HYD</option>
+                        <option value="6441.67">337 MAA</option>
+                        <option value="8391.67">341 KHI</option>
+                        <option value="7904.17">343 AMD</option>
+                        <option value="7958.33">345 LHE</option>
+                        <option value="8662.50">349 ISB</option>
                     </optgroup>
                     <optgroup label="JAPAN-KOREA">
-                        <option value="9280.00">622/672 - KIX</option>
-                        <option value="10060.00">640/676 - NRT</option>
-                        <option value="10125.00">642 - NRT</option>
-                        <option value="9507.50">644 - NGO</option>
-                        <option value="8825.00">648 - FUK</option>
-                        <option value="9247.50">652/656/658 - ICN</option>
-                        <option value="10060.00">660/682 - HND</option>
-                        <option value="10742.50">670 - CTS</option>
+                        <option value="9366.67">622 KIX</option>
+                        <option value="10233.33">640 NRT</option>
+                        <option value="10341.67">642 NRT</option>
+                        <option value="9745.83">644 NGO</option>
+                        <option value="9041.67">648 FUK</option>
+                        <option value="8812.50">652 ICN</option>
+                        <option value="9312.50">656/658 ICN</option>
+                        <option value="10233.33">660/682 HND</option>
+                        <option value="10937.50">670 CTS</option>
+                        <option value="8866.67">672 KIX</option>
+                        <option value="9733.33">676 NRT</option>
                     </optgroup>
                     <optgroup label="AUSTRALIA">
-                        <option value="13830.00">461/465 - MEL</option>
-                        <option value="13830.00">471/475 - SYD</option>
-                        <option value="10710.00">481/483 - PER</option>
+                        <option value="13916.67">461/465 MEL</option>
+                        <option value="13916.67">471 SYD</option>
+                        <option value="13416.67">475 SYD</option>
+                        <option value="10383.33">481 PER</option>
+                        <option value="10883.33">483 PER</option>
                     </optgroup>
                     <optgroup label="EUROPE">
-                        <option value="14415.00">900 - IST</option>
-                        <option value="17600.00">910/916 - LHR</option>
-                        <option value="16365.00">920/922 - FRA</option>
-                        <option value="16007.50">924 - MUC</option>
-                        <option value="17080.00">930 - CDG</option>
-                        <option value="17047.50">934 - BRU</option>
-                        <option value="17112.50">936 - AMS</option>
-                        <option value="16495.00">940 - MXP</option>
-                        <option value="16332.50">950 - CPH</option>
-                        <option value="17275.00">954 - OSL</option>
-                        <option value="16657.50">960 - ARN</option>
-                        <option value="16495.00">970 - ZRH</option>
+                        <option value="14458.33">900 IST</option>
+                        <option value="17600.00">910/916 LHR</option>
+                        <option value="16408.33">920/922 FRA</option>
+                        <option value="16245.83">924 MUC</option>
+                        <option value="17166.67">930 CDG</option>
+                        <option value="17112.50">934 BRU</option>
+                        <option value="17220.83">936 AMS</option>
+                        <option value="16625.00">940 MXP</option>
+                        <option value="16354.17">950 CPH</option>
+                        <option value="17491.67">954 OSL</option>
+                        <option value="16895.83">960 ARN</option>
+                        <option value="16625.00">970 ZRH</option>
                     </optgroup>
                </select>
                 <input type="text" class="flight-price w-24 p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 text-right font-bold text-lg" value="0" readonly>
@@ -161,44 +204,85 @@
     </div>
 
 <script>
-    function initChoices(element) { return new Choices(element, { searchEnabled: true, itemSelectText: '', shouldSort: false, position: 'bottom' }); }
-    function saveData() { const flights = Array.from(document.querySelectorAll('.flight-select')).map(s => s.value); localStorage.setItem('baseSalary', document.getElementById('baseSalary').value); localStorage.setItem('flights', JSON.stringify(flights)); }
-    
+    // 1. ฟังก์ชันตั้งค่า Choices.js ให้เป็นกล่องสวยๆ
+    function initChoices(element) { 
+        return new Choices(element, { searchEnabled: true, itemSelectText: '', shouldSort: false, position: 'bottom' }); 
+    }
+
+    // 2. ฟังก์ชันบันทึกข้อมูลลง LocalStorage
+    function saveData() { 
+        const flights = Array.from(document.querySelectorAll('.flight-select')).map(s => s.value); 
+        localStorage.setItem('baseSalary', document.getElementById('baseSalary').value); 
+        localStorage.setItem('flights', JSON.stringify(flights)); 
+    }
+
+    // 3. ฟังก์ชันคำนวณและแสดงราคา
+    function updatePrice(selectElement) { 
+        const row = selectElement.closest('.flight-row'); 
+        const priceInput = row.querySelector('.flight-price'); 
+        priceInput.value = parseFloat(selectElement.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+        calculate(); 
+    }
+
+    function calculate() { 
+        let base = parseFloat(document.getElementById('baseSalary').value) || 0; 
+        let total = base; 
+        document.querySelectorAll('.flight-price').forEach(input => { 
+            total += parseFloat(input.value.replace(/,/g, '')) || 0; 
+        }); 
+        document.getElementById('totalAmount').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+    }
+
+    // 4. ฟังก์ชันเพิ่มแถวใหม่ (สมบูรณ์แบบ)
+    function addFlightRow(selectedValue = "0") {
+        const container = document.getElementById('flightContainer');
+        const newRow = document.createElement('div');
+        newRow.className = 'flight-row';
+        
+        // ก๊อปปี้ Options จากตัวเลือกแรก
+        const optionsHTML = document.querySelector('.flight-select').innerHTML;
+        
+        newRow.innerHTML = `
+            <select class="flight-select" onchange="updatePrice(this); saveData();">${optionsHTML}</select>
+            <input type="text" class="flight-price" value="0" readonly>
+            <button onclick="this.parentElement.remove(); calculate(); saveData();" class="text-red-400 font-bold text-xl">×</button>
+        `;
+        
+        container.appendChild(newRow);
+        
+        const sel = newRow.querySelector('.flight-select');
+        sel.value = selectedValue;
+        
+        // ต้อง Init Choices ให้แถวใหม่ด้วย
+        initChoices(sel);
+        updatePrice(sel);
+    }
+
+    // 5. เมื่อโหลดหน้าเว็บเสร็จ
     window.onload = () => {
         const savedSalary = localStorage.getItem('baseSalary');
         if (savedSalary) document.getElementById('baseSalary').value = savedSalary;
+        
         const savedFlights = JSON.parse(localStorage.getItem('flights'));
         if (savedFlights && savedFlights.length > 0) {
             savedFlights.forEach((val, index) => {
-                if(index === 0) { const firstSelect = document.querySelector('.flight-select'); firstSelect.value = val; updatePrice(firstSelect); }
-                else { addFlightRow(val); }
+                if(index === 0) { 
+                    const firstSelect = document.querySelector('.flight-select'); 
+                    firstSelect.value = val; 
+                    updatePrice(firstSelect); 
+                } else { 
+                    addFlightRow(val); 
+                }
             });
         }
         calculate();
     };
 
-    function updatePrice(selectElement) { const row = selectElement.closest('.flight-row'); const priceInput = row.querySelector('.flight-price'); priceInput.value = parseFloat(selectElement.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); calculate(); }
-    function calculate() { let base = parseFloat(document.getElementById('baseSalary').value) || 0; let total = base; document.querySelectorAll('.flight-price').forEach(input => { total += parseFloat(input.value.replace(/,/g, '')) || 0; }); document.getElementById('totalAmount').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
-
-    function addFlightRow(selectedValue = "0") {
-        const container = document.getElementById('flightContainer');
-        const newRow = document.createElement('div');
-        newRow.className = 'flight-row';
-        const originalSelect = document.querySelector('.flight-select');
-        newRow.innerHTML = `
-            <select class="flight-select" onchange="updatePrice(this); saveData();">${originalSelect.innerHTML}</select>
-            <input type="text" class="flight-price" value="0" readonly>
-            <button onclick="this.parentElement.remove(); calculate(); saveData();" class="text-red-400 font-bold">×</button>
-        `;
-        container.appendChild(newRow);
-        const sel = newRow.querySelector('.flight-select');
-        sel.value = selectedValue;
-        initChoices(sel);
-        updatePrice(sel);
-    }
-
+    // 6. ปุ่ม Add และ Reset
     document.getElementById('addFlightBtn').addEventListener('click', () => addFlightRow());
     document.getElementById('resetBtn').addEventListener('click', () => { localStorage.clear(); location.reload(); });
+
+    // Init ตัวเลือกแรก
     initChoices(document.querySelector('.flight-select'));
 </script>
 </body>
