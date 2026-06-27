@@ -179,8 +179,6 @@
     
     <div class="mt-2 flex justify-center items-center gap-2 text-[10px] text-gray-400">
         <button onclick="copySummary()" class="underline hover:text-white transition">Copy Summary</button>
-        <span class="text-gray-600">|</span>
-        <button onclick="saveAsImage()" class="underline hover:text-white transition">Save as Image</button>
         </div>
 
         <p class="mt-6 text-center text-gray-400 text-[10px] italic">Just an estimate! Don't be mad if it's slightly off ;(</p>
@@ -202,40 +200,6 @@
         const text = `Allowance Summary: ${note}\nTotal: ${total} THB`;
         navigator.clipboard.writeText(text).then(() => alert("Summary copied!"));
     }
-
-    function saveAsImage() {
-        const element = document.querySelector('.max-w-md'); // กล่องสีขาวหลัก
-    html2canvas(element, {
-        scale: 2,
-        backgroundColor: "#ffffff",
-        logging: false,
-        useCORS: true,
-        // ตัดปัญหาทุกอย่างด้วย onclone
-        onclone: (clonedDoc) => {
-            const clonedEl = clonedDoc.querySelector('.max-w-md');
-            
-            // 1. เปลี่ยนทุก Select (Choices.js) ให้กลายเป็นข้อความ Plain Text
-            clonedDoc.querySelectorAll('.choices').forEach(el => {
-                const selectedText = el.querySelector('.choices__item--selectable')?.innerText || "Select a flight...";
-                el.outerHTML = `<div style="padding: 12px; border: 2px solid #e5e7eb; border-radius: 12px; font-weight: bold; font-size: 14px; background: #f9fafb;">${selectedText}</div>`;
-            });
-
-            // 2. ปรับแต่งส่วนที่มักจะเพี้ยนในรูปแคป
-            clonedEl.style.paddingBottom = "40px";
-            
-            // 3. ปรับขนาดฟอนต์ของตัวเลขราคานิดนึงเพื่อให้ไม่โดนตัด
-            clonedDoc.querySelectorAll('.flight-price').forEach(el => {
-                el.style.border = "none";
-                el.style.fontSize = "14px";
-            });
-        }
-    }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = `Allowance-${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-    });
-}
     
     function updatePrice(selectElement) { 
         const row = selectElement.closest('.flight-row'); 
