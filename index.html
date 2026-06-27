@@ -21,7 +21,7 @@
 </head>
 <body class="bg-gray-100 p-4">
     <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl p-6">
-        <h1 class="text-2xl font-black mb-2 text-gray-800">Allowance Calculator</h1>
+        <h1 class="text-3xl font-black mb-4 text-gray-800">Allowance Calculator</h1>
 
         <div class="mb-6">
             <input id="note" type="text" placeholder="Add a note (e.g., June Roster)..." 
@@ -203,20 +203,31 @@
         navigator.clipboard.writeText(text).then(() => alert("Summary copied!"));
     }
 
-function saveAsImage() {
-    const element = document.querySelector('.max-w-md');
+    function saveAsImage() {
+        const element = document.querySelector('.max-w-md'); // กล่องสีขาวหลัก
     html2canvas(element, {
         scale: 2,
         backgroundColor: "#ffffff",
         logging: false,
+        useCORS: true,
+        // ตัดปัญหาทุกอย่างด้วย onclone
         onclone: (clonedDoc) => {
             const clonedEl = clonedDoc.querySelector('.max-w-md');
+            
+            // 1. เปลี่ยนทุก Select (Choices.js) ให้กลายเป็นข้อความ Plain Text
             clonedDoc.querySelectorAll('.choices').forEach(el => {
-                const parent = el.parentElement;
-                const text = el.querySelector('.choices__item--selectable')?.innerText || "Select a flight...";
-                parent.innerHTML = `<div style="padding: 10px; border: 1px solid #ddd; border-radius: 12px; font-weight: bold;">${text}</div>`;
+                const selectedText = el.querySelector('.choices__item--selectable')?.innerText || "Select a flight...";
+                el.outerHTML = `<div style="padding: 12px; border: 2px solid #e5e7eb; border-radius: 12px; font-weight: bold; font-size: 14px; background: #f9fafb;">${selectedText}</div>`;
             });
-            clonedEl.style.padding = "20px";
+
+            // 2. ปรับแต่งส่วนที่มักจะเพี้ยนในรูปแคป
+            clonedEl.style.paddingBottom = "40px";
+            
+            // 3. ปรับขนาดฟอนต์ของตัวเลขราคานิดนึงเพื่อให้ไม่โดนตัด
+            clonedDoc.querySelectorAll('.flight-price').forEach(el => {
+                el.style.border = "none";
+                el.style.fontSize = "14px";
+            });
         }
     }).then(canvas => {
         const link = document.createElement('a');
