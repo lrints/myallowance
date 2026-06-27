@@ -203,31 +203,29 @@
         navigator.clipboard.writeText(text).then(() => alert("Summary copied!"));
     }
 
-    function saveAsImage() {
+function saveAsImage() {
     const element = document.querySelector('.max-w-md');
-    element.style.paddingBottom = "40px";
     html2canvas(element, {
         scale: 2,
         backgroundColor: "#ffffff",
         logging: false,
-        allowTaint: true,
         onclone: (clonedDoc) => {
             const clonedEl = clonedDoc.querySelector('.max-w-md');
-            clonedEl.style.paddingBottom = "40px";
-            clonedDoc.querySelectorAll('input, select').forEach(el => {
-                el.style.webkitAppearance = 'none';
-                el.style.border = '2px solid #e5e7eb';
+            clonedDoc.querySelectorAll('.choices').forEach(el => {
+                const parent = el.parentElement;
+                const text = el.querySelector('.choices__item--selectable')?.innerText || "Select a flight...";
+                parent.innerHTML = `<div style="padding: 10px; border: 1px solid #ddd; border-radius: 12px; font-weight: bold;">${text}</div>`;
             });
+            clonedEl.style.padding = "20px";
         }
     }).then(canvas => {
-        element.style.paddingBottom = "24px"; // คืนค่า
         const link = document.createElement('a');
         link.download = `Allowance-${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
     });
 }
-
+    
     function updatePrice(selectElement) { 
         const row = selectElement.closest('.flight-row'); 
         const priceInput = row.querySelector('.flight-price'); 
