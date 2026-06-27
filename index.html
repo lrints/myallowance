@@ -210,10 +210,18 @@
     }
 
     function calculate() { 
-        let base = parseFloat(document.getElementById('baseSalary').value) || 0; 
-        let total = base; 
-        document.querySelectorAll('.flight-price').forEach(input => { total += parseFloat(input.value.replace(/,/g, '')) || 0; }); 
-        document.getElementById('totalAmount').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+    let base = parseFloat(document.getElementById('baseSalary').value) || 0; 
+    let total = base; 
+    
+    document.querySelectorAll('.flight-price').forEach(input => { 
+        const price = parseFloat(input.value.replace(/,/g, '')) || 0;
+        total += price; 
+    }); 
+    
+    document.getElementById('totalAmount').innerText = total.toLocaleString(undefined, {
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2
+    }); 
     }
 
     function addFlightRow(selectedValue = "0") {
